@@ -34,7 +34,7 @@ export default function SettingsButton() {
     {
       text: 'Support BG1',
       icon: <HeartIcon className="text-red-600" />,
-      action: () => open('https://joelface.github.io/bg1/contact.html#donate'),
+      action: () => open('https://dallasodom.github.io/bg1/contact.html#donate'),
     },
   ]);
   const [showingMenu, showMenu] = useState(false);

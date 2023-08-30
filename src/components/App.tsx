@@ -74,7 +74,7 @@ export default function App({ authStore }: { authStore: Public<AuthStore> }) {
         if (!(e instanceof InvalidOrigin)) throw e;
       }
     }
-    location.href = 'https://joelface.github.io/bg1/start.html';
+    location.href = 'https://dallasodom.github.io/bg1/start.html';
   }, [authStore]);
 
   useEffect(() => {

@@ -16,7 +16,7 @@ describe('ping()', () => {
     jest.advanceTimersByTime(ONE_HOUR);
     await ping();
     expect(fetchJson).toBeCalledTimes(1);
-    expect(fetchJson).lastCalledWith('https://bg1.joelface.com/ping', {
+    expect(fetchJson).lastCalledWith('https://bg1.dallasodom.com/ping', {
       method: 'POST',
     });
 
