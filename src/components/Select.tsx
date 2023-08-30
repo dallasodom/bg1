@@ -1,5 +1,6 @@
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
 
+import { useTheme } from '@/contexts/Theme';
 import Icon from '@/icons/Icon';
 
 import Button from './Button';
@@ -18,13 +19,14 @@ type Props<K, V> = Omit<
   'children' | 'selected' | 'onChange'
 > & {
   options: Map<K, Option<V>>;
-  selected: K;
+  selected?: K;
   onChange: (value: V) => void;
-  iconOnly?: boolean;
 };
 
 export default function Select<K extends string, V = K>(props: Props<K, V>) {
-  const { options, selected, title, onChange, ...buttonProps } = props;
+  const { options, selected, title, onChange, disabled, ...buttonProps } =
+    props;
+  const { bg } = useTheme();
   const [showingList, showList] = useState(false);
   const [minTextWidth, setMinTextWidth] = useState(0);
   const btnTextRef = useRef<HTMLSpanElement>(null);
@@ -72,7 +74,11 @@ export default function Select<K extends string, V = K>(props: Props<K, V>) {
     }
     showList(false);
   };
-  const opt = options.get(selected);
+  const opt = selected
+    ? options.get(selected)
+    : title !== undefined
+    ? { text: title }
+    : undefined;
   if (!opt) return null;
   const { icon, text } = opt;
   let arrowPressed = false;
@@ -81,7 +87,8 @@ export default function Select<K extends string, V = K>(props: Props<K, V>) {
     <>
       <Button
         {...buttonProps}
-        title={icon ? `${title}: ${opt.text}` : title}
+        title={icon ? `${title}: ${text}` : title}
+        disabled={disabled || options.size === 0}
         onClick={() => showList(true)}
       >
         {icon ? (
@@ -109,7 +116,8 @@ export default function Select<K extends string, V = K>(props: Props<K, V>) {
             if (arrowPressed) return;
             if (
               !listRef.current?.contains(event.target as Element) ||
-              (event.target as HTMLInputElement).value === selected
+              (selected &&
+                (event.target as HTMLInputElement).value === selected)
             ) {
               showList(false);
               event.preventDefault();
@@ -124,31 +132,37 @@ export default function Select<K extends string, V = K>(props: Props<K, V>) {
           }}
           data-testid="shade"
         >
-          <ul
-            className="overflow-auto min-w-[50%] max-h-[90%] rounded-lg bg-white text-black"
-            ref={listRef}
-          >
-            {[...options].map(([k, opt]) => {
-              return (
-                <li
-                  className="border-t-2 first:border-0 border-gray-300"
-                  key={opt.text}
-                >
-                  <label className="flex flex-row items-center gap-x-2.5 px-4 py-3">
-                    <input
-                      type="radio"
-                      name={RADIO_NAME}
-                      value={k}
-                      defaultChecked={k === selected}
-                      className="w-4 h-4 shrink-0"
-                    />{' '}
-                    {opt.icon && <span aria-hidden="true">{opt.icon}</span>}{' '}
-                    {opt.text}
-                  </label>
-                </li>
-              );
-            })}
-          </ul>
+          <div className="flex flex-col min-w-[50%] max-h-[90%] rounded-lg bg-white text-black">
+            {title && (
+              <h3
+                className={`mt-0 rounded-t-lg px-2 py-1 ${bg} text-white font-semibold text-center`}
+              >
+                {title}
+              </h3>
+            )}
+            <ul className="overflow-auto" ref={listRef}>
+              {[...options].map(([k, opt]) => {
+                return (
+                  <li
+                    className="border-t-2 first:border-0 border-gray-300"
+                    key={opt.text}
+                  >
+                    <label className="flex flex-row items-center gap-x-2.5 px-4 py-3">
+                      <input
+                        type="radio"
+                        name={RADIO_NAME}
+                        value={k}
+                        defaultChecked={k === selected}
+                        className="w-4 h-4 shrink-0"
+                      />{' '}
+                      {opt.icon && <span aria-hidden="true">{opt.icon}</span>}{' '}
+                      {opt.text}
+                    </label>
+                  </li>
+                );
+              })}
+            </ul>
+          </div>
         </Overlay>
       )}
     </>
