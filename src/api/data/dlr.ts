@@ -402,6 +402,16 @@ export const experiences: Experiences = {
     name: 'Amazing Spider-Man',
     land: avengers,
   },
+  19630107: {
+    id: '19630107',
+    name: 'Avengers Assemble!',
+    land: avengers,
+  },
+  18781959: {
+    id: '18781959',
+    name: 'Coco Musical Celebration',
+    land: paradise,
+  },
   18708628: {
     id: '18708628',
     name: 'Disney Junior Dance Party',
@@ -498,6 +508,12 @@ export const experiences: Experiences = {
     land: cars,
     sort: 2,
   },
+  18752877: {
+    id: '18752877',
+    name: "Luigi's Honkin' Haul-O-Ween",
+    land: cars,
+    sort: 2,
+  },
   18848246: {
     id: '18848246',
     name: "Luigi's Joy to the Whirl",
@@ -512,6 +528,12 @@ export const experiences: Experiences = {
   16514431: {
     id: '16514431',
     name: "Mater's Junkyard Jamboree",
+    land: cars,
+    sort: 3,
+  },
+  18752875: {
+    id: '18752875',
+    name: "Mater's Graveyard JamBOOree",
     land: cars,
     sort: 3,
   },
@@ -552,6 +574,11 @@ export const experiences: Experiences = {
     geo: [33.8052475, -117.9198715],
     priority: 1.0,
     sort: 1,
+  },
+  353413: {
+    id: '353413',
+    name: 'Redwood Creek Challenge Trail',
+    land: grizzly,
   },
   15510732: {
     id: '15510732',

@@ -5,12 +5,11 @@ import News from '@/components/screens/News';
 import { useGenieClient } from '@/contexts/GenieClient';
 import { useNav } from '@/contexts/Nav';
 import ExitIcon from '@/icons/ExitIcon';
-import HeartIcon from '@/icons/HeartIcon';
 import NewsIcon from '@/icons/NewsIcon';
 import SettingsIcon from '@/icons/SettingsIcon';
 import UserIcon from '@/icons/UserIcon';
-
 import PartySelector from '../PartySelector';
+import HeartIcon from '@/icons/HeartIcon';
 
 export default function SettingsButton() {
   const { goTo } = useNav();

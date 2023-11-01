@@ -444,7 +444,7 @@ export const experiences: Experiences = {
     land: tomorrowland,
     geo: [28.4202075, -81.577053],
     priority: 1.0,
-    sort: 1,
+    sort: 8,
   },
   16767263: {
     id: '16767263',
@@ -465,6 +465,11 @@ export const experiences: Experiences = {
     land: showcase,
     type: 'ENTERTAINMENT',
   },
+  19473173: {
+    id: '19473173',
+    name: 'Awesome Planet',
+    land: nature,
+  },
   19463785: {
     id: '19463785',
     name: 'Beauty & the Beast Sing-Along',
@@ -475,11 +480,21 @@ export const experiences: Experiences = {
     name: 'Canada Far and Wide',
     land: showcase,
   },
+  19036653: {
+    id: '19036653',
+    name: 'Canada Mill Stage Entertainment',
+    land: showcase,
+  },
   18269694: {
     id: '18269694',
     name: 'Disney & Pixar Short Film Festival',
     land: celebration,
     geo: [28.3720463, -81.5508243],
+  },
+  19242311: {
+    id: '19242311',
+    name: 'Germany Gazebo Entertainment',
+    land: showcase,
   },
   19258170: {
     id: '19258170',
@@ -511,7 +526,7 @@ export const experiences: Experiences = {
     land: discovery,
     geo: [28.3747479, -81.5478405],
     priority: 1.0,
-    sort: 1,
+    sort: 3,
   },
   13507: {
     id: '13507',
@@ -524,6 +539,11 @@ export const experiences: Experiences = {
     land: celebration,
     geo: [28.372896, -81.5512292],
     sort: 2,
+  },
+  411794307: {
+    id: '411794307',
+    name: 'Journey of Water, Inspired by Moana',
+    land: nature,
   },
   19516307: {
     id: '19516307',
@@ -570,7 +590,7 @@ export const experiences: Experiences = {
     land: discovery,
     geo: [28.3739368, -81.5526389],
     priority: 4.0,
-    sort: 3,
+    sort: 2,
   },
   18780200: {
     id: '18780200',
@@ -605,6 +625,14 @@ export const experiences: Experiences = {
     priority: 3.0,
     sort: 1,
   },
+  412001587: {
+    id: '412001587',
+    name: "Soarin' Over California",
+    land: nature,
+    geo: [28.3735924, -81.5522783],
+    priority: 2.0,
+    sort: 1,
+  },
   80010191: {
     id: '80010191',
     name: 'Spaceship Earth',
@@ -619,7 +647,7 @@ export const experiences: Experiences = {
     land: discovery,
     geo: [28.3733374, -81.5474931],
     priority: 1.2,
-    sort: 2,
+    sort: 1,
   }),
   62992: {
     id: '62992',
@@ -653,6 +681,11 @@ export const experiences: Experiences = {
     name: 'Disney Junior Play and Dance',
     land: otherStudios,
     geo: [28.3579409, -81.5607914],
+  },
+  18693119: {
+    id: '18693119',
+    name: 'Disney Movie Magic',
+    land: hollywood,
   },
   80010887: {
     id: '80010887',

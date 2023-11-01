@@ -35,12 +35,19 @@ export interface Experience extends ExpData {
   individual?: {
     available: boolean;
     displayPrice: string;
+    nextAvailableTime?: string;
+  };
+  virtualQueue?: {
+    available: boolean;
+    waitTime: number;
   };
   experienced?: boolean;
   drop?: boolean;
 }
 
 export type PlusExperience = Experience & Required<Pick<Experience, 'flex'>>;
+export type IllExperience = Experience &
+  Required<Pick<Experience, 'individual'>>;
 
 type ApiExperience = Omit<
   Experience,
@@ -302,6 +309,11 @@ interface Itinerary {
   profiles: { [id: string]: Profile };
 }
 
+export const FALLBACK_IDS = {
+  WDW: { experience: '80010110', park: '80007944' },
+  DLR: { experience: '353295', park: '330339' },
+} as const;
+
 const RES_TYPES = new Set(['ACTIVITY', 'DINING']);
 
 const idNum = (id: string) => id.split(';')[0];
@@ -381,15 +393,15 @@ export class GenieClient extends ApiClient {
 
   async guests(experience?: {
     id: string;
-    park: { id: string };
+    park?: { id: string };
   }): Promise<Guests> {
-    experience ||= { id: '0', park: { id: '0' } };
+    const ids = FALLBACK_IDS[this.data.resort];
     const { data } = await this.request<GuestsResponse>({
       path: '/ea-vas/api/v1/guests',
       params: {
         productType: 'FLEX',
-        experienceId: experience.id,
-        parkId: experience.park.id,
+        experienceId: experience?.id ?? ids.experience,
+        parkId: experience?.park?.id ?? ids.park,
       },
     });
     this.primaryGuestId = data.primaryGuestId;
@@ -453,6 +465,7 @@ export class GenieClient extends ApiClient {
       },
       userId: false,
     });
+    import('./diu'); // preload
     return {
       id,
       start: { date, time: startTime },
@@ -473,17 +486,19 @@ export class GenieClient extends ApiClient {
     guestsToModify?: Pick<Guest, 'id'>[]
   ): Promise<LightningLane> {
     throwOnNotModifiable(bookingToModify);
+    const diu = (await import('./diu')).default;
     const guestIdsToModify = new Set(
       (guestsToModify ?? offer.guests.eligible).map(g => g.id)
     );
     const { data } = await this.request<NewBookingResponse>({
       path: bookingToModify
-        ? '/ea-vas/api/v1/products/modifications/flex/bookings'
-        : '/ea-vas/api/v1/products/flex/bookings',
+        ? '/ea-vas/api/v2/products/modifications/flex/bookings'
+        : '/ea-vas/api/v2/products/flex/bookings',
       method: 'POST',
       userId: false,
       data: {
         offerId: offer.id,
+        ...(await diu(offer.id)),
         ...(bookingToModify
           ? {
               date: dateTimeStrings().date,
@@ -559,6 +574,7 @@ export class GenieClient extends ApiClient {
         'show-friends': 'false',
       },
       userId: false,
+      ignoreUnauth: true,
     });
 
     const getGuest = (g: ReservationItem['guests'][0]) => {
@@ -874,7 +890,7 @@ export class BookingTracker {
     this.expIds = new Set(cancellableLLs.map(b => b.id));
     for (const id of oldExpIds) {
       if (this.expIds.has(id)) continue;
-      const { ineligible } = await client.guests({ id, park: { id: '0' } });
+      const { ineligible } = await client.guests({ id });
       const limitReached = ineligible.some(
         g => g.ineligibleReason === 'EXPERIENCE_LIMIT_REACHED'
       );

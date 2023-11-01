@@ -20,6 +20,7 @@ import { experiences, parks } from '../data/wdw';
 import {
   Booking,
   BookingTracker,
+  FALLBACK_IDS,
   GenieClient,
   Guest,
   LightningLane,
@@ -28,6 +29,12 @@ import {
 } from '../genie';
 
 jest.mock('@/fetch');
+const diu = {
+  disneyInternalUse01: '1',
+  disneyInternalUse02: '2',
+  disneyInternalUse03: '3',
+};
+jest.mock('../diu', () => ({ __esModule: true, default: () => diu }));
 
 const accessToken = 'access_token_123';
 const swid = '{abc}';
@@ -131,8 +138,13 @@ describe('GenieClient', () => {
       respond(guestsRes, ...Array(4).fill(res));
       expect(await getExpData()).toEqual([smExp]);
       expect(client.nextBookTime).toBe('11:00:00');
+      const ids = FALLBACK_IDS.WDW;
       expectFetch('/ea-vas/api/v1/guests', {
-        params: { productType: 'FLEX', experienceId: '0', parkId: '0' },
+        params: {
+          productType: 'FLEX',
+          experienceId: ids.experience,
+          parkId: ids.park,
+        },
       });
       expectFetch(
         `/tipboard-vas/api/v1/parks/${encodeURIComponent(mk.id)}/experiences`,
@@ -634,10 +646,10 @@ describe('GenieClient', () => {
         bookingId: 'ent-' + mickey.id,
       });
       expectFetch(
-        '/ea-vas/api/v1/products/flex/bookings',
+        '/ea-vas/api/v2/products/flex/bookings',
         {
           method: 'POST',
-          data: { offerId: offer.id },
+          data: { offerId: offer.id, ...diu },
         },
         false
       );

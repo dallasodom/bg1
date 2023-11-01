@@ -57,7 +57,7 @@ describe('App', () => {
   });
 
   it('shows News if newer than last seen', async () => {
-    localStorage.setItem(NEWS_VERSION_KEY, '0');
+    localStorage.setItem(NEWS_VERSION_KEY, '-1');
     renderComponent();
     await see.screen('BG1 News');
     click('Close');
